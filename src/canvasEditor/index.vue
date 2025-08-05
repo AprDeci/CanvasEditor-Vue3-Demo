@@ -588,297 +588,290 @@
     //   }
     // }
 
-    // const codeblockDom = document.querySelector(
-    //   '.menu-item__codeblock'
-    // )
-    // codeblockDom.onclick = function () {
-    //   console.log('codeblock')
-    //   new Dialog({
-    //     title: '代码块',
-    //     data: [
-    //       {
-    //         type: 'textarea',
-    //         name: 'codeblock',
-    //         placeholder: '请输入代码',
-    //         width: 500,
-    //         height: 300
-    //       }
-    //     ],
-    //     onConfirm: payload => {
-    //       const codeblock = payload.find(p => p.name === 'codeblock')?.value
-    //       if (!codeblock) return
-    //       const tokenList = prism.tokenize(codeblock, prism.languages.javascript)
-    //       const formatTokenList = formatPrismToken(tokenList)
-    //       const elementList = []
-    //       for (let i = 0; i < formatTokenList.length; i++) {
-    //         const formatToken = formatTokenList[i]
-    //         const tokenStringList = splitText(formatToken.content)
-    //         for (let j = 0; j < tokenStringList.length; j++) {
-    //           const value = tokenStringList[j]
-    //           const element = {
-    //             value
-    //           }
-    //           if (formatToken.color) {
-    //             element.color = formatToken.color
-    //           }
-    //           if (formatToken.bold) {
-    //             element.bold = true
-    //           }
-    //           if (formatToken.italic) {
-    //             element.italic = true
-    //           }
-    //           elementList.push(element)
-    //         }
-    //       }
-    //       elementList.unshift({
-    //         value: '\n'
-    //       })
-    //       instance.command.executeInsertElementList(elementList)
-    //     }
-    //   })
-    // }
+    const codeblockDom = document.querySelector('.menu-item__codeblock');
+    codeblockDom.onclick = function () {
+      console.log('codeblock');
+      new Dialog({
+        title: '代码块',
+        data: [
+          {
+            type: 'textarea',
+            name: 'codeblock',
+            placeholder: '请输入代码',
+            width: 500,
+            height: 300
+          }
+        ],
+        onConfirm: (payload) => {
+          const codeblock = payload.find((p) => p.name === 'codeblock')?.value;
+          if (!codeblock) return;
+          const tokenList = prism.tokenize(codeblock, prism.languages.javascript);
+          const formatTokenList = formatPrismToken(tokenList);
+          const elementList = [];
+          for (let i = 0; i < formatTokenList.length; i++) {
+            const formatToken = formatTokenList[i];
+            const tokenStringList = splitText(formatToken.content);
+            for (let j = 0; j < tokenStringList.length; j++) {
+              const value = tokenStringList[j];
+              const element = {
+                value
+              };
+              if (formatToken.color) {
+                element.color = formatToken.color;
+              }
+              if (formatToken.bold) {
+                element.bold = true;
+              }
+              if (formatToken.italic) {
+                element.italic = true;
+              }
+              elementList.push(element);
+            }
+          }
+          elementList.unshift({
+            value: '\n'
+          });
+          instance.command.executeInsertElementList(elementList);
+        }
+      });
+    };
 
-    // const controlDom = document.querySelector(
-    //   '.menu-item__control'
-    // )
-    // const controlOptionDom = controlDom.querySelector('.options')
-    // controlDom.onclick = function () {
-    //   console.log('control')
-    //   controlOptionDom.classList.toggle('visible')
-    // }
-    // controlOptionDom.onmousedown = function (evt) {
-    //   controlOptionDom.classList.toggle('visible')
-    //   const li = evt.target
-    //   const type = li.dataset.control
-    //   switch (type) {
-    //     case ControlType.TEXT:
-    //       new Dialog({
-    //         title: '文本控件',
-    //         data: [
-    //           {
-    //             type: 'text',
-    //             label: '占位符',
-    //             name: 'placeholder',
-    //             required: true,
-    //             placeholder: '请输入占位符'
-    //           },
-    //           {
-    //             type: 'text',
-    //             label: '默认值',
-    //             name: 'value',
-    //             placeholder: '请输入默认值'
-    //           }
-    //         ],
-    //         onConfirm: payload => {
-    //           const placeholder = payload.find(
-    //             p => p.name === 'placeholder'
-    //           )?.value
-    //           if (!placeholder) return
-    //           const value = payload.find(p => p.name === 'value')?.value || ''
-    //           instance.command.executeInsertElementList([
-    //             {
-    //               type: ElementType.CONTROL,
-    //               value: '',
-    //               control: {
-    //                 type,
-    //                 value: value
-    //                   ? [
-    //                       {
-    //                         value
-    //                       }
-    //                     ]
-    //                   : null,
-    //                 placeholder
-    //               }
-    //             }
-    //           ])
-    //         }
-    //       })
-    //       break
-    //     case ControlType.SELECT:
-    //       new Dialog({
-    //         title: '列举控件',
-    //         data: [
-    //           {
-    //             type: 'text',
-    //             label: '占位符',
-    //             name: 'placeholder',
-    //             required: true,
-    //             placeholder: '请输入占位符'
-    //           },
-    //           {
-    //             type: 'text',
-    //             label: '默认值',
-    //             name: 'code',
-    //             placeholder: '请输入默认值'
-    //           },
-    //           {
-    //             type: 'textarea',
-    //             label: '值集',
-    //             name: 'valueSets',
-    //             required: true,
-    //             height: 100,
-    //             placeholder: `请输入值集JSON，例：\n[{\n"value":"有",\n"code":"98175"\n}]`
-    //           }
-    //         ],
-    //         onConfirm: payload => {
-    //           const placeholder = payload.find(
-    //             p => p.name === 'placeholder'
-    //           )?.value
-    //           if (!placeholder) return
-    //           const valueSets = payload.find(p => p.name === 'valueSets')?.value
-    //           if (!valueSets) return
-    //           const code = payload.find(p => p.name === 'code')?.value
-    //           instance.command.executeInsertElementList([
-    //             {
-    //               type: ElementType.CONTROL,
-    //               value: '',
-    //               control: {
-    //                 type,
-    //                 code,
-    //                 value: null,
-    //                 placeholder,
-    //                 valueSets: JSON.parse(valueSets)
-    //               }
-    //             }
-    //           ])
-    //         }
-    //       })
-    //       break
-    //     case ControlType.CHECKBOX:
-    //       new Dialog({
-    //         title: '复选框控件',
-    //         data: [
-    //           {
-    //             type: 'text',
-    //             label: '默认值',
-    //             name: 'code',
-    //             placeholder: '请输入默认值，多个值以英文逗号分割'
-    //           },
-    //           {
-    //             type: 'textarea',
-    //             label: '值集',
-    //             name: 'valueSets',
-    //             required: true,
-    //             height: 100,
-    //             placeholder: `请输入值集JSON，例：\n[{\n"value":"有",\n"code":"98175"\n}]`
-    //           }
-    //         ],
-    //         onConfirm: payload => {
-    //           const valueSets = payload.find(p => p.name === 'valueSets')?.value
-    //           if (!valueSets) return
-    //           const code = payload.find(p => p.name === 'code')?.value
-    //           instance.command.executeInsertElementList([
-    //             {
-    //               type: ElementType.CONTROL,
-    //               value: '',
-    //               control: {
-    //                 type,
-    //                 code,
-    //                 value: null,
-    //                 valueSets: JSON.parse(valueSets)
-    //               }
-    //             }
-    //           ])
-    //         }
-    //       })
-    //       break
-    //     default:
-    //       break
-    //   }
-    // }
+    const controlDom = document.querySelector('.menu-item__control');
+    const controlOptionDom = controlDom.querySelector('.options');
+    controlDom.onclick = function () {
+      console.log('control');
+      controlOptionDom.classList.toggle('visible');
+    };
+    controlOptionDom.onmousedown = function (evt) {
+      controlOptionDom.classList.toggle('visible');
+      const li = evt.target;
+      const type = li.dataset.control;
+      switch (type) {
+        case ControlType.TEXT:
+          new Dialog({
+            title: '文本控件',
+            data: [
+              {
+                type: 'text',
+                label: '占位符',
+                name: 'placeholder',
+                required: true,
+                placeholder: '请输入占位符'
+              },
+              {
+                type: 'text',
+                label: '默认值',
+                name: 'value',
+                placeholder: '请输入默认值'
+              }
+            ],
+            onConfirm: (payload) => {
+              const placeholder = payload.find((p) => p.name === 'placeholder')?.value;
+              if (!placeholder) return;
+              const value = payload.find((p) => p.name === 'value')?.value || '';
+              instance.command.executeInsertElementList([
+                {
+                  type: ElementType.CONTROL,
+                  value: '',
+                  control: {
+                    type,
+                    value: value
+                      ? [
+                          {
+                            value
+                          }
+                        ]
+                      : null,
+                    placeholder
+                  }
+                }
+              ]);
+            }
+          });
+          break;
+        case ControlType.SELECT:
+          new Dialog({
+            title: '列举控件',
+            data: [
+              {
+                type: 'text',
+                label: '占位符',
+                name: 'placeholder',
+                required: true,
+                placeholder: '请输入占位符'
+              },
+              {
+                type: 'text',
+                label: '默认值',
+                name: 'code',
+                placeholder: '请输入默认值'
+              },
+              {
+                type: 'textarea',
+                label: '值集',
+                name: 'valueSets',
+                required: true,
+                height: 100,
+                placeholder: `请输入值集JSON，例：\n[{\n"value":"有",\n"code":"98175"\n}]`
+              }
+            ],
+            onConfirm: (payload) => {
+              const placeholder = payload.find((p) => p.name === 'placeholder')?.value;
+              if (!placeholder) return;
+              const valueSets = payload.find((p) => p.name === 'valueSets')?.value;
+              if (!valueSets) return;
+              const code = payload.find((p) => p.name === 'code')?.value;
+              instance.command.executeInsertElementList([
+                {
+                  type: ElementType.CONTROL,
+                  value: '',
+                  control: {
+                    type,
+                    code,
+                    value: null,
+                    placeholder,
+                    valueSets: JSON.parse(valueSets)
+                  }
+                }
+              ]);
+            }
+          });
+          break;
+        case ControlType.CHECKBOX:
+          new Dialog({
+            title: '复选框控件',
+            data: [
+              {
+                type: 'text',
+                label: '默认值',
+                name: 'code',
+                placeholder: '请输入默认值，多个值以英文逗号分割'
+              },
+              {
+                type: 'textarea',
+                label: '值集',
+                name: 'valueSets',
+                required: true,
+                height: 100,
+                placeholder: `请输入值集JSON，例：\n[{\n"value":"有",\n"code":"98175"\n}]`
+              }
+            ],
+            onConfirm: (payload) => {
+              const valueSets = payload.find((p) => p.name === 'valueSets')?.value;
+              if (!valueSets) return;
+              const code = payload.find((p) => p.name === 'code')?.value;
+              instance.command.executeInsertElementList([
+                {
+                  type: ElementType.CONTROL,
+                  value: '',
+                  control: {
+                    type,
+                    code,
+                    value: null,
+                    valueSets: JSON.parse(valueSets)
+                  }
+                }
+              ]);
+            }
+          });
+          break;
+        default:
+          break;
+      }
+    };
 
-    // const checkboxDom = document.querySelector(
-    //   '.menu-item__checkbox'
-    // )
-    // checkboxDom.onclick = function () {
-    //   console.log('checkbox')
-    //   instance.command.executeInsertElementList([
-    //     {
-    //       type: ElementType.CHECKBOX,
-    //       checkbox: {
-    //         value: false
-    //       },
-    //       value: ''
-    //     }
-    //   ])
-    // }
+    const checkboxDom = document.querySelector('.menu-item__checkbox');
+    checkboxDom.onclick = function () {
+      console.log('checkbox');
+      instance.command.executeInsertElementList([
+        {
+          type: ElementType.CHECKBOX,
+          checkbox: {
+            value: false
+          },
+          value: ''
+        }
+      ]);
+    };
 
-    // const latexDom = document.querySelector('.menu-item__latex')
-    // latexDom.onclick = function () {
-    //   console.log('LaTeX')
-    //   new Dialog({
-    //     title: 'LaTeX',
-    //     data: [
-    //       {
-    //         type: 'textarea',
-    //         height: 100,
-    //         name: 'value',
-    //         placeholder: '请输入LaTeX文本'
-    //       }
-    //     ],
-    //     onConfirm: payload => {
-    //       const value = payload.find(p => p.name === 'value')?.value
-    //       if (!value) return
-    //       instance.command.executeInsertElementList([
-    //         {
-    //           type: ElementType.LATEX,
-    //           value
-    //         }
-    //       ])
-    //     }
-    //   })
-    // }
+    //latex
+    const latexDom = document.querySelector('.menu-item__latex');
+    latexDom.onclick = function () {
+      console.log('LaTeX');
+      new Dialog({
+        title: 'LaTeX',
+        data: [
+          {
+            type: 'textarea',
+            height: 100,
+            name: 'value',
+            placeholder: '请输入LaTeX文本'
+          }
+        ],
+        onConfirm: (payload) => {
+          const value = payload.find((p) => p.name === 'value')?.value;
+          if (!value) return;
+          instance.command.executeInsertElementList([
+            {
+              type: ElementType.LATEX,
+              value
+            }
+          ]);
+        }
+      });
+    };
 
-    // const dateDom = document.querySelector('.menu-item__date')
-    // const dateDomOptionDom = dateDom.querySelector('.options')
-    // dateDom.onclick = function () {
-    //   console.log('date')
-    //   dateDomOptionDom.classList.toggle('visible')
-    //   // 定位调整
-    //   const bodyRect = document.body.getBoundingClientRect()
-    //   const dateDomOptionRect = dateDomOptionDom.getBoundingClientRect()
-    //   if (dateDomOptionRect.left + dateDomOptionRect.width > bodyRect.width) {
-    //     dateDomOptionDom.style.right = '0px'
-    //     dateDomOptionDom.style.left = 'unset'
-    //   } else {
-    //     dateDomOptionDom.style.right = 'unset'
-    //     dateDomOptionDom.style.left = '0px'
-    //   }
-    //   // 当前日期
-    //   const date = new Date()
-    //   const year = date.getFullYear().toString()
-    //   const month = (date.getMonth() + 1).toString().padStart(2, '0')
-    //   const day = date.getDate().toString().padStart(2, '0')
-    //   const hour = date.getHours().toString().padStart(2, '0')
-    //   const minute = date.getMinutes().toString().padStart(2, '0')
-    //   const second = date.getSeconds().toString().padStart(2, '0')
-    //   const dateString = `${year}-${month}-${day}`
-    //   const dateTimeString = `${dateString} ${hour}:${minute}:${second}`
-    //   dateDomOptionDom.querySelector('li:first-child').innerText = dateString
-    //   dateDomOptionDom.querySelector('li:last-child').innerText = dateTimeString
-    // }
-    // dateDomOptionDom.onmousedown = function (evt) {
-    //   const li = evt.target
-    //   const dateFormat = li.dataset.format
-    //   dateDomOptionDom.classList.toggle('visible')
-    //   instance.command.executeInsertElementList([
-    //     {
-    //       type: ElementType.DATE,
-    //       value: '',
-    //       dateFormat,
-    //       valueList: [
-    //         {
-    //           value: li.innerText.trim()
-    //         }
-    //       ]
-    //     }
-    //   ])
-    // }
+    //日期添加
+    const dateDom = document.querySelector('.menu-item__date');
+    const dateDomOptionDom = dateDom.querySelector('.options');
+    dateDom.onclick = function () {
+      console.log('date');
+      dateDomOptionDom.classList.toggle('visible');
+      // 定位调整
+      const bodyRect = document.body.getBoundingClientRect();
+      const dateDomOptionRect = dateDomOptionDom.getBoundingClientRect();
+      if (dateDomOptionRect.left + dateDomOptionRect.width > bodyRect.width) {
+        dateDomOptionDom.style.right = '0px';
+        dateDomOptionDom.style.left = 'unset';
+      } else {
+        dateDomOptionDom.style.right = 'unset';
+        dateDomOptionDom.style.left = '0px';
+      }
+      // 当前日期
+      const date = new Date();
+      const year = date.getFullYear().toString();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const hour = date.getHours().toString().padStart(2, '0');
+      const minute = date.getMinutes().toString().padStart(2, '0');
+      const second = date.getSeconds().toString().padStart(2, '0');
+      const dateString = `${year}-${month}-${day}`;
+      const dateTimeString = `${dateString} ${hour}:${minute}:${second}`;
+      dateDomOptionDom.querySelector('li:first-child').innerText = dateString;
+      dateDomOptionDom.querySelector('li:last-child').innerText = dateTimeString;
+    };
+    dateDomOptionDom.onmousedown = function (evt) {
+      const li = evt.target;
+      const dateFormat = li.dataset.format;
+      dateDomOptionDom.classList.toggle('visible');
+      instance.command.executeInsertElementList([
+        {
+          type: ElementType.DATE,
+          value: '',
+          dateFormat,
+          valueList: [
+            {
+              value: li.innerText.trim()
+            }
+          ]
+        }
+      ]);
+    };
 
-    // const blockDom = document.querySelector('.menu-item__block')
+    //内容块 未修复
+    // const blockDom = document.querySelector('.menu-item__block');
     // blockDom.onclick = function () {
-    //   console.log('block')
+    //   console.log('block');
     //   new Dialog({
     //     title: '内容块',
     //     data: [
@@ -921,39 +914,39 @@
     //         placeholder: '请输入地址'
     //       }
     //     ],
-    //     onConfirm: payload => {
-    //       const type = payload.find(p => p.name === 'type')?.value
-    //       if (!type) return
-    //       const value = payload.find(p => p.name === 'value')?.value
-    //       if (!value) return
-    //       const width = payload.find(p => p.name === 'width')?.value
-    //       const height = payload.find(p => p.name === 'height')?.value
-    //       if (!height) return
+    //     onConfirm: (payload) => {
+    //       const type = payload.find((p) => p.name === 'type')?.value;
+    //       if (!type) return;
+    //       const value = payload.find((p) => p.name === 'value')?.value;
+    //       if (!value) return;
+    //       const width = payload.find((p) => p.name === 'width')?.value;
+    //       const height = payload.find((p) => p.name === 'height')?.value;
+    //       if (!height) return;
     //       const block = {
     //         type: null
-    //       }
+    //       };
     //       if (block.type === BlockType.IFRAME) {
     //         block.iframeBlock = {
     //           src: value
-    //         }
+    //         };
     //       } else if (block.type === BlockType.VIDEO) {
     //         block.videoBlock = {
     //           src: value
-    //         }
+    //         };
     //       }
-    //       const blockElemen = {
+    //       const blockElement = {
     //         type: ElementType.BLOCK,
     //         value: '',
     //         height: Number(height),
     //         block
-    //       }
+    //       };
     //       if (width) {
-    //         blockElement.width = Number(width)
+    //         blockElement.width = Number(width);
     //       }
-    //       instance.command.executeInsertElementList([blockElement])
+    //       instance.command.executeInsertElementList([blockElement]);
     //     }
-    //   })
-    // }
+    //   });
+    // };
 
     // 5. | 搜索&替换 | 打印 |
     const searchCollapseDom = document.querySelector('.menu-item__search__collapse');
@@ -1621,8 +1614,20 @@
     <div class="menu" editor-component="menu">
       <div class="menu-item">
         <div class="menu-item__save" title="保存">
-          save
-          <i class="el-icon-s-claim" style="color: #646464"></i>
+          <svg
+            t="1754436488458"
+            class="icon"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="1476"
+            width="16"
+            height="16"
+            fill="gray">
+            <path
+              d="M708.388571 121.904762L902.095238 320.804571V828.952381a73.142857 73.142857 0 0 1-73.142857 73.142857H195.047619a73.142857 73.142857 0 0 1-73.142857-73.142857V195.047619a73.142857 73.142857 0 0 1 73.142857-73.142857h513.340952zM292.571429 195.023238L195.047619 195.047619v633.904762l97.52381-0.024381V536.380952h438.857142v292.547048L828.952381 828.952381V350.549333l-97.52381-100.156952V365.714286H292.571429V195.023238zM658.285714 609.52381H365.714286v219.40419h292.571428V609.52381z m-48.761904 73.142857v73.142857h-195.04762v-73.142857h195.04762z m48.761904-487.619048H365.714286v97.52381h292.571428V195.047619z"
+              p-id="1477"></path>
+          </svg>
         </div>
         <div class="menu-item__undo">
           <i></i>
