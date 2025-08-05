@@ -1897,11 +1897,11 @@
           <div class="options">
             <ul>
               <li data-control="text">文本</li>
-              <li data-control="number">数值</li>
+              <!-- <li data-control="number">数值</li> -->
               <li data-control="select">列举</li>
-              <li data-control="date">日期</li>
+              <!-- <li data-control="date">日期</li> -->
               <li data-control="checkbox">复选框</li>
-              <li data-control="radio">单选框</li>
+              <!-- <li data-control="radio">单选框</li> -->
             </ul>
           </div>
         </div>
