@@ -1026,61 +1026,54 @@
     // }
 
     // 6. 目录显隐 | 页面模式 | 纸张缩放 | 纸张大小 | 纸张方向 | 页边距 | 全屏
-    // async function updateCatalog() {
-    //   const catalog = await instance.command.getCatalog()
-    //   const catalogMainDom =
-    //     document.querySelector('.catalog__main')
-    //   catalogMainDom.innerHTML = ''
-    //   if (catalog) {
-    //     const appendCatalog = (
-    //       parent,
-    //       catalogItems
-    //     ) => {
-    //       for (let c = 0; c < catalogItems.length; c++) {
-    //         const catalogItem = catalogItems[c]
-    //         const catalogItemDom = document.createElement('div')
-    //         catalogItemDom.classList.add('catalog-item')
-    //         // 渲染
-    //         const catalogItemContentDom = document.createElement('div')
-    //         catalogItemContentDom.classList.add('catalog-item__content')
-    //         const catalogItemContentSpanDom = document.createElement('span')
-    //         catalogItemContentSpanDom.innerText = catalogItem.name
-    //         catalogItemContentDom.append(catalogItemContentSpanDom)
-    //         // 定位
-    //         catalogItemContentDom.onclick = () => {
-    //           instance.command.executeLocationCatalog(catalogItem.id)
-    //         }
-    //         catalogItemDom.append(catalogItemContentDom)
-    //         if (catalogItem.subCatalog && catalogItem.subCatalog.length) {
-    //           appendCatalog(catalogItemDom, catalogItem.subCatalog)
-    //         }
-    //         // 追加
-    //         parent.append(catalogItemDom)
-    //       }
-    //     }
-    //     appendCatalog(catalogMainDom, catalog)
-    //   }
-    // }
-    // let isCatalogShow = true
-    // const catalogDom = document.querySelector('.catalog')
-    // const catalogModeDom =
-    //   document.querySelector('.catalog-mode')
-    // const catalogHeaderCloseDom = document.querySelector(
-    //   '.catalog__header__close'
-    // )
-    // const switchCatalog = () => {
-    //   console.log('目录', isCatalogShow)
-    //   isCatalogShow = !isCatalogShow
-    //   if (isCatalogShow) {
-    //     console.log('目录', isCatalogShow)
-    //     catalogDom.style.display = 'block'
-    //     updateCatalog()
-    //   } else {
-    //     catalogDom.style.display = 'none'
-    //   }
-    // }
-    // catalogModeDom.onclick = switchCatalog
-    // catalogHeaderCloseDom.onclick = switchCatalog
+    async function updateCatalog() {
+      const catalog = await instance.command.getCatalog();
+      const catalogMainDom = document.querySelector('.catalog__main');
+      catalogMainDom.innerHTML = '';
+      if (catalog) {
+        const appendCatalog = (parent, catalogItems) => {
+          for (let c = 0; c < catalogItems.length; c++) {
+            const catalogItem = catalogItems[c];
+            const catalogItemDom = document.createElement('div');
+            catalogItemDom.classList.add('catalog-item');
+            // 渲染
+            const catalogItemContentDom = document.createElement('div');
+            catalogItemContentDom.classList.add('catalog-item__content');
+            const catalogItemContentSpanDom = document.createElement('span');
+            catalogItemContentSpanDom.innerText = catalogItem.name;
+            catalogItemContentDom.append(catalogItemContentSpanDom);
+            // 定位
+            catalogItemContentDom.onclick = () => {
+              instance.command.executeLocationCatalog(catalogItem.id);
+            };
+            catalogItemDom.append(catalogItemContentDom);
+            if (catalogItem.subCatalog && catalogItem.subCatalog.length) {
+              appendCatalog(catalogItemDom, catalogItem.subCatalog);
+            }
+            // 追加
+            parent.append(catalogItemDom);
+          }
+        };
+        appendCatalog(catalogMainDom, catalog);
+      }
+    }
+    let isCatalogShow = true;
+    const catalogDom = document.querySelector('.catalog');
+    const catalogModeDom = document.querySelector('.catalog-mode');
+    const catalogHeaderCloseDom = document.querySelector('.catalog__header__close');
+    const switchCatalog = () => {
+      console.log('目录', isCatalogShow);
+      isCatalogShow = !isCatalogShow;
+      if (isCatalogShow) {
+        console.log('目录', isCatalogShow);
+        catalogDom.style.display = 'block';
+        updateCatalog();
+      } else {
+        catalogDom.style.display = 'none';
+      }
+    };
+    catalogModeDom.onclick = switchCatalog;
+    catalogHeaderCloseDom.onclick = switchCatalog;
 
     const pageModeDom = document.querySelector('.page-mode');
     const pageModeOptionsDom = pageModeDom.querySelector('.options');
@@ -1274,10 +1267,9 @@
     const updateComment = async () => {
       const groupIds = await instance.command.getGroupIds();
       for (const comment of commentList.value) {
-        console.log(comment);
         const activeCommentDom = commentDom.querySelector(`.comment-item[data-id='${comment.id}']`);
         // 编辑器是否存在对应成组id
-        if (!groupIds.includes(comment.id)) {
+        if (groupIds.includes(comment.id)) {
           // 当前dom是否存在-不存在则追加
           if (!activeCommentDom) {
             const commentItem = document.createElement('div');
@@ -1487,11 +1479,11 @@
       const wordCount = await instance.command.getWordCount();
       document.querySelector('.word-count').innerText = `${wordCount || 0}`;
       // 目录
-      // if (isCatalogShow) {
-      //   this.$nextTick(() => {
-      //     updateCatalog()
-      //   })
-      // }
+      if (isCatalogShow) {
+        await nextTick(() => {
+          updateCatalog();
+        });
+      }
       // // 批注
       await nextTick(() => {
         updateComment();
