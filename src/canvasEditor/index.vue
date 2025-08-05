@@ -363,107 +363,105 @@
     };
 
     // 4. | 表格 | 图片 | 超链接 | 分割线 | 水印 | 代码块 | 分隔符 | 控件 | 复选框 | LaTeX | 日期选择器
-    // const tableDom = document.querySelector('.menu-item__table')
-    // const tablePanelContainer = document.querySelector(
-    //   '.menu-item__table__collapse'
-    // )
-    // const tableClose = document.querySelector('.table-close')
-    // const tableTitle = document.querySelector('.table-select')
-    // const tablePanel = document.querySelector('.table-panel')
-    // // 绘制行列
-    // const tableCellList = []
-    // for (let i = 0; i < 10; i++) {
-    //   const tr = document.createElement('tr')
-    //   tr.classList.add('table-row')
-    //   const trCellList = []
-    //   for (let j = 0; j < 10; j++) {
-    //     const td = document.createElement('td')
-    //     td.classList.add('table-cel')
-    //     tr.append(td)
-    //     trCellList.push(td)
-    //   }
-    //   tablePanel.append(tr)
-    //   tableCellList.push(trCellList)
-    // }
-    // let colIndex = 0
-    // let rowIndex = 0
-    // // 移除所有格选择
-    // function removeAllTableCellSelect() {
-    //   tableCellList.forEach(tr => {
-    //     tr.forEach(td => td.classList.remove('active'))
-    //   })
-    // }
-    // // 设置标题内容
-    // function setTableTitle(payload) {
-    //   tableTitle.innerText = payload
-    // }
-    // // 恢复初始状态
-    // function recoveryTable() {
-    //   // 还原选择样式、标题、选择行列
-    //   removeAllTableCellSelect()
-    //   setTableTitle('插入')
-    //   colIndex = 0
-    //   rowIndex = 0
-    //   // 隐藏panel
-    //   tablePanelContainer.style.display = 'none'
-    // }
-    // tableDom.onclick = function () {
-    //   console.log('table')
-    //   tablePanelContainer.style.display = 'block'
-    // }
-    // tablePanel.onmousemove = function (evt) {
-    //   const celSize = 16
-    //   const rowMarginTop = 10
-    //   const celMarginRight = 6
-    //   const { offsetX, offsetY } = evt
-    //   // 移除所有选择
-    //   removeAllTableCellSelect()
-    //   colIndex = Math.ceil(offsetX / (celSize + celMarginRight)) || 1
-    //   rowIndex = Math.ceil(offsetY / (celSize + rowMarginTop)) || 1
-    //   // 改变选择样式
-    //   tableCellList.forEach((tr, trIndex) => {
-    //     tr.forEach((td, tdIndex) => {
-    //       if (tdIndex < colIndex && trIndex < rowIndex) {
-    //         td.classList.add('active')
-    //       }
-    //     })
-    //   })
-    //   // 改变表格标题
-    //   setTableTitle(`${rowIndex}×${colIndex}`)
-    // }
-    // tableClose.onclick = function () {
-    //   recoveryTable()
-    // }
-    // tablePanel.onclick = function () {
-    //   // 应用选择
-    //   instance.command.executeInsertTable(rowIndex, colIndex)
-    //   recoveryTable()
-    // }
+    const tableDom = document.querySelector('.menu-item__table');
+    const tablePanelContainer = document.querySelector('.menu-item__table__collapse');
+    const tableClose = document.querySelector('.table-close');
+    const tableTitle = document.querySelector('.table-select');
+    const tablePanel = document.querySelector('.table-panel');
+    // 绘制行列
+    const tableCellList = [];
+    for (let i = 0; i < 10; i++) {
+      const tr = document.createElement('tr');
+      tr.classList.add('table-row');
+      const trCellList = [];
+      for (let j = 0; j < 10; j++) {
+        const td = document.createElement('td');
+        td.classList.add('table-cel');
+        tr.append(td);
+        trCellList.push(td);
+      }
+      tablePanel.append(tr);
+      tableCellList.push(trCellList);
+    }
+    let colIndex = 0;
+    let rowIndex = 0;
+    // 移除所有格选择
+    function removeAllTableCellSelect() {
+      tableCellList.forEach((tr) => {
+        tr.forEach((td) => td.classList.remove('active'));
+      });
+    }
+    // 设置标题内容
+    function setTableTitle(payload) {
+      tableTitle.innerText = payload;
+    }
+    // 恢复初始状态
+    function recoveryTable() {
+      // 还原选择样式、标题、选择行列
+      removeAllTableCellSelect();
+      setTableTitle('插入');
+      colIndex = 0;
+      rowIndex = 0;
+      // 隐藏panel
+      tablePanelContainer.style.display = 'none';
+    }
+    tableDom.onclick = function () {
+      console.log('table');
+      tablePanelContainer.style.display = 'block';
+    };
+    tablePanel.onmousemove = function (evt) {
+      const celSize = 16;
+      const rowMarginTop = 10;
+      const celMarginRight = 6;
+      const { offsetX, offsetY } = evt;
+      // 移除所有选择
+      removeAllTableCellSelect();
+      colIndex = Math.ceil(offsetX / (celSize + celMarginRight)) || 1;
+      rowIndex = Math.ceil(offsetY / (celSize + rowMarginTop)) || 1;
+      // 改变选择样式
+      tableCellList.forEach((tr, trIndex) => {
+        tr.forEach((td, tdIndex) => {
+          if (tdIndex < colIndex && trIndex < rowIndex) {
+            td.classList.add('active');
+          }
+        });
+      });
+      // 改变表格标题
+      setTableTitle(`${rowIndex}×${colIndex}`);
+    };
+    tableClose.onclick = function () {
+      recoveryTable();
+    };
+    tablePanel.onclick = function () {
+      // 应用选择
+      instance.command.executeInsertTable(rowIndex, colIndex);
+      recoveryTable();
+    };
 
-    // const imageDom = document.querySelector('.menu-item__image')
-    // const imageFileDom = document.querySelector('#image')
-    // imageDom.onclick = function () {
-    //   imageFileDom.click()
-    // }
-    // imageFileDom.onchange = function () {
-    //   const file = imageFileDom.files[0]
-    //   const fileReader = new FileReader()
-    //   fileReader.readAsDataURL(file)
-    //   fileReader.onload = function () {
-    //     // 计算宽高
-    //     const image = new Image()
-    //     const value = String(fileReader.result)
-    //     image.src = value
-    //     image.onload = function () {
-    //       instance.command.executeImage({
-    //         value,
-    //         width: image.width,
-    //         height: image.height
-    //       })
-    //       imageFileDom.value = ''
-    //     }
-    //   }
-    // }
+    const imageDom = document.querySelector('.menu-item__image');
+    const imageFileDom = document.querySelector('#image');
+    imageDom.onclick = function () {
+      imageFileDom.click();
+    };
+    imageFileDom.onchange = function () {
+      const file = imageFileDom.files[0];
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = function () {
+        // 计算宽高
+        const image = new Image();
+        const value = String(fileReader.result);
+        image.src = value;
+        image.onload = function () {
+          instance.command.executeImage({
+            value,
+            width: image.width,
+            height: image.height
+          });
+          imageFileDom.value = '';
+        };
+      };
+    };
 
     const hyperlinkDom = document.querySelector('.menu-item__hyperlink');
     hyperlinkDom.onclick = function () {
@@ -2039,7 +2037,7 @@
   </div>
 </template>
 
-<style scoped>
+<style>
   @import url('./components/dialog/dialog.css');
   @import url('./components/signature/signature.css');
   @import url(./style.css);
