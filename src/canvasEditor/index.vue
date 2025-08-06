@@ -522,71 +522,68 @@
       instance.command.executeSeparator(payload);
     };
 
-    // const pageBreakDom = document.querySelector(
-    //   '.menu-item__page-break'
-    // )
-    // pageBreakDom.onclick = function () {
-    //   console.log('pageBreak')
-    //   instance.command.executePageBreak()
-    // }
+    //分页符
+    const pageBreakDom = document.querySelector('.menu-item__page-break');
+    pageBreakDom.onclick = function () {
+      console.log('pageBreak');
+      instance.command.executePageBreak();
+    };
 
-    // const watermarkDom = document.querySelector(
-    //   '.menu-item__watermark'
-    // )
-    // const watermarkOptionDom =
-    //   watermarkDom.querySelector('.options')
-    // watermarkDom.onclick = function () {
-    //   console.log('watermark')
-    //   watermarkOptionDom.classList.toggle('visible')
-    // }
-    // watermarkOptionDom.onmousedown = function (evt) {
-    //   const li = evt.target
-    //   const menu = li.dataset.menu
-    //   watermarkOptionDom.classList.toggle('visible')
-    //   if (menu === 'add') {
-    //     new Dialog({
-    //       title: '水印',
-    //       data: [
-    //         {
-    //           type: 'text',
-    //           label: '内容',
-    //           name: 'data',
-    //           required: true,
-    //           placeholder: '请输入内容'
-    //         },
-    //         {
-    //           type: 'color',
-    //           label: '颜色',
-    //           name: 'color',
-    //           required: true,
-    //           value: '#AEB5C0'
-    //         },
-    //         {
-    //           type: 'number',
-    //           label: '字体大小',
-    //           name: 'size',
-    //           required: true,
-    //           value: '120'
-    //         }
-    //       ],
-    //       onConfirm: payload => {
-    //         const nullableIndex = payload.findIndex(p => !p.value)
-    //         if (~nullableIndex) return
-    //         const watermark = payload.reduce((pre, cur) => {
-    //           pre[cur.name] = cur.value
-    //           return pre
-    //         }, {})
-    //         instance.command.executeAddWatermark({
-    //           data: watermark.data,
-    //           color: watermark.color,
-    //           size: Number(watermark.size)
-    //         })
-    //       }
-    //     })
-    //   } else {
-    //     instance.command.executeDeleteWatermark()
-    //   }
-    // }
+    //水印
+    const watermarkDom = document.querySelector('.menu-item__watermark');
+    const watermarkOptionDom = watermarkDom.querySelector('.options');
+    watermarkDom.onclick = function () {
+      console.log('watermark');
+      watermarkOptionDom.classList.toggle('visible');
+    };
+    watermarkOptionDom.onmousedown = function (evt) {
+      const li = evt.target;
+      const menu = li.dataset.menu;
+      watermarkOptionDom.classList.toggle('visible');
+      if (menu === 'add') {
+        new Dialog({
+          title: '水印',
+          data: [
+            {
+              type: 'text',
+              label: '内容',
+              name: 'data',
+              required: true,
+              placeholder: '请输入内容'
+            },
+            {
+              type: 'color',
+              label: '颜色',
+              name: 'color',
+              required: true,
+              value: '#AEB5C0'
+            },
+            {
+              type: 'number',
+              label: '字体大小',
+              name: 'size',
+              required: true,
+              value: '120'
+            }
+          ],
+          onConfirm: (payload) => {
+            const nullableIndex = payload.findIndex((p) => !p.value);
+            if (~nullableIndex) return;
+            const watermark = payload.reduce((pre, cur) => {
+              pre[cur.name] = cur.value;
+              return pre;
+            }, {});
+            instance.command.executeAddWatermark({
+              data: watermark.data,
+              color: watermark.color,
+              size: Number(watermark.size)
+            });
+          }
+        });
+      } else {
+        instance.command.executeDeleteWatermark();
+      }
+    };
 
     const codeblockDom = document.querySelector('.menu-item__codeblock');
     codeblockDom.onclick = function () {
