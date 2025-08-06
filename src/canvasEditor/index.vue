@@ -780,12 +780,28 @@
       }
     };
 
+    //多选
     const checkboxDom = document.querySelector('.menu-item__checkbox');
     checkboxDom.onclick = function () {
       console.log('checkbox');
       instance.command.executeInsertElementList([
         {
           type: ElementType.CHECKBOX,
+          checkbox: {
+            value: false
+          },
+          value: ''
+        }
+      ]);
+    };
+
+    //单选
+    const radioDom = document.querySelector('.menu-item__radio');
+    radioDom.onclick = function () {
+      console.log('radio');
+      instance.command.executeInsertElementList([
+        {
+          type: ElementType.RADIO,
           checkbox: {
             value: false
           },
