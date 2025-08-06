@@ -147,7 +147,7 @@
     saveDom.onclick = () => {
       const value = instance.command.getValue(options);
       const htmlVal = instance.command.getHTML();
-      emits('save', htmlVal); // 保存数据传给父组件
+      emits('save', value.data); //据传给父组件
     };
     // 快捷键保存
     instance.listener.saved = (payload) => {
@@ -1024,12 +1024,12 @@
       setSearchResult();
     };
 
-    // const printDom = document.querySelector('.menu-item__print')
-    // printDom.title = `打印(${isApple ? '⌘' : 'Ctrl'}+P)`
-    // printDom.onclick = function () {
-    //   console.log('print')
-    //   instance.command.executePrint()
-    // }
+    const printDom = document.querySelector('.menu-item__print');
+    printDom.title = `打印(${isApple ? '⌘' : 'Ctrl'}+P)`;
+    printDom.onclick = function () {
+      console.log('print');
+      instance.command.executePrint();
+    };
 
     // 6. 目录显隐 | 页面模式 | 纸张缩放 | 纸张大小 | 纸张方向 | 页边距 | 全屏
     async function updateCatalog() {
